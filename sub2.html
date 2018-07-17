@@ -8,9 +8,40 @@
     <script src="js/mui.min.js"></script>
     <script type="text/javascript" charset="utf-8">
       	mui.init();
+      	var _index, _self, _next,_prev;
+      	mui.plusReady(function(){
+      		_self = plus.webview.currentWebview();
+	       _next = plus.webview.getWebviewById('sub3.html');
+	       _prev = plus.webview.getWebviewById('sub1.html');
+	       _index = plus.webview.getLaunchWebview();
+	       //向右滑动
+			_self.drag({
+				direction : "left",
+				moveMode  : "followFinger"
+			},{
+				view : _next,
+				moveMode : "follow"
+			},function(e){
+				if(e.type == 'end' && e.result){
+					_index.evalJS('h("#navFooter").find("a").removeClass("mui-active"); h("#nav3").addClass("mui-active")')
+				}
+			});
+			//向左滑动
+			_self.drag({
+				direction : "right",
+				moveMode  : "followFinger"
+			},{
+				view : _prev,
+				moveMode : "follow"
+			},function(e){
+				if(e.type == 'end' && e.result){
+					_index.evalJS('h("#navFooter").find("a").removeClass("mui-active"); h("#nav1").addClass("mui-active")')
+				}
+			});
+      	});
     </script>
 </head>
 <body>
-	
+	sub2
 </body>
 </html>

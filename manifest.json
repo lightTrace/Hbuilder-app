@@ -125,5 +125,32 @@
 				}
 			}
 		}
+	},
+	"dependencies": {
+		"pages": {
+			"index.html": {
+				"resources": [
+					"sub1.html"
+				],
+				"refer": [
+					"sub3.html",
+					"sub4.html",
+					"sub2.html"
+				],
+				"priority": 0
+			}
+		},
+		"idle": {
+			"resources": [
+				"js/h.js",
+				"imgs/share.png",
+				"imgs/logo.png",
+				"js/mui.min.js",
+				"fonts/mui.ttf",
+				"css/mui.css",
+				"imgs/appLogo.png",
+				"imgs/searchBut.png"
+			]
+		}
 	}
 }

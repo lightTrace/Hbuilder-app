@@ -15,27 +15,68 @@
      <div id="searchBut">请输入要翻译的文本</div>
 	</header>
 	
-	<nav class="mui-bar mui-bar-tab">
-	    <a class="mui-tab-item mui-active">
+	<nav class="mui-bar mui-bar-tab" id = "navFooter">
+	    <a class="mui-tab-item mui-active" id="nav1">
 	        <span class="mui-icon mui-icon-home"></span>
 	        <span class="mui-tab-label">首页</span>
 	    </a>
-	    <a class="mui-tab-item">
+	    <a class="mui-tab-item" id="nav2">
 	        <span class="mui-icon mui-icon-compose"></span>
 	        <span class="mui-tab-label">词典</span>
 	    </a>
-	    <a class="mui-tab-item">
+	    <a class="mui-tab-item" id="nav3">
 	        <span class="mui-icon mui-icon-star"></span>
 	        <span class="mui-tab-label">热点</span>
 	    </a>
-	    <a class="mui-tab-item">
+	    <a class="mui-tab-item" id="nav4">
 	        <span class="mui-icon mui-icon-gear"></span>
 	        <span class="mui-tab-label">我的</span>
 	    </a>
 	</nav>
     <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/h.js" ></script>
     <script type="text/javascript" charset="utf-8">
-      	mui.init();
-    </script>	
+mui.init({
+	subpages : [
+		{
+			url : 'sub1.html',
+	        id  : 'sub1.html',
+	        styles : {top :'44px', bottom:'44px', width:"100%"}
+		},
+  		{
+			url : 'sub2.html',
+        	id  : 'sub2.html',
+        	styles : {top :'44px', bottom:'44px', width:"100%", left:"100%"}
+		},
+  		{
+			url : 'sub3.html',
+        	id  : 'sub3.html',
+        	styles : {top :'44px', bottom:'44px', width:"100%", left:"200%"}
+		},
+  		{
+			url : 'sub4.html',
+        	id  : 'sub4.html',
+        	styles : {top :'44px', bottom:'44px', width:"100%", left:"300%"}
+		}
+	]
+});
+      	
+h('#nav1').tap(function(){changSub(1);});
+h('#nav2').tap(function(){changSub(2);});
+h('#nav3').tap(function(){changSub(3);});
+h('#nav4').tap(function(){changSub(4);});
+
+
+function changSub(index){
+	var sub1 = plus.webview.getWebviewById('sub1.html');
+    var sub2 = plus.webview.getWebviewById('sub2.html');
+    var sub3 = plus.webview.getWebviewById('sub3.html');
+    var sub4 = plus.webview.getWebviewById('sub4.html');
+    sub1.setStyle({left: (1 - index) * 100 + '%'});
+    sub2.setStyle({left: (2 - index) * 100 + "%"});
+    sub3.setStyle({left: (3 - index) * 100 + "%"});
+    sub4.setStyle({left: (4 - index) * 100 + "%"});
+}
+</script>	
 </body>
 </html>
