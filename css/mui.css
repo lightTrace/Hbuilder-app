@@ -1497,6 +1497,7 @@ input[type='submit']:enabled:active, input[type='submit'].mui-active:enabled,
     width: auto;
     margin: 0;
 
+
     text-overflow: ellipsis;
 }
 .mui-bar .mui-backdrop
@@ -1578,8 +1579,8 @@ input[type='submit']:enabled:active, input[type='submit'].mui-active:enabled,
     text-align: center;
     white-space: nowrap;
 
-    color: #000;
-}
+    color: #FFFFFF;
+    }
 
 .mui-title a
 {
@@ -5618,3 +5619,15 @@ body > .mui-progressbar
       }
 #logo img{height:44px; width:44px;}    
 #searchBut{width:70%; height:30px; line-height:30px; margin:7px; border-radius:30px; float:right; background:url(../imgs/searchBut.png) no-repeat 8px center #FFFFFF; background-size:auto 68%; padding-left:35px; color:#6D6D72; font-size:14px;}
+
+.newsList{padding:8px; }
+.newsList ul{list-style:none; padding:0px;}
+.newsList li{width:100%; overflow:hidden;}
+.newsList a{color:#000000;}
+.newsList .imgs{width:20%; float:left; overflow:hidden;}
+.newsList .imgs img{width:100%; height:100%; }
+.newsList .title{width:78%; float:right; font-size:14px; line-height:1.5em; overflow:hidden;}
+#newsContent{padding:8px; overflow:hidden; line-height:1.8em; padding-top:52px; padding-bottom:52px;}
+#newsContent img{width:100%;}
+#newsFooter{width:100%; height:44px; background:#F7F7F7; position:fixed; z-index:1; left:0px; bottom:0px;}
+#share{width:34px; height:34px; float:right; margin:5px 8px;}

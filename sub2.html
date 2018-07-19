@@ -5,10 +5,38 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title></title>
     <link href="css/mui.min.css" rel="stylesheet"/>
+ 
+</head>
+<body>
+<div class="mui-content">
+	<div style="width:90%; padding-top:38px; margin:0 auto;">
+		<textarea id="keywords" style="width:100%; height:128px;" placeholder="请输入要翻译的文本"></textarea>
+	</div>
+	<div style="width:90%; margin:0 auto;">
+		<button type="button" id="submitBtn" class="mui-btn" style="width:100%;">开始翻译</button>
+	</div>
+	<div style="width:90%; background:#FFFFFF; margin:0 auto; margin-top:18px; display:none;" id="resShow">
+		<p style="line-height:1.8em; font-size:15px; padding:10px;"></p>
+	</div>
+</div>
+ 
     <script src="js/mui.min.js"></script>
+    <script src="js/h.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" charset="utf-8">
       	mui.init();
       	var _index, _self, _next,_prev;
+      	h('#submitBtn').tap(function(){
+      		var keywords = h('#keywords').val();
+      		if(keywords.length < 1){mui.toast('请输入要翻译的文本'); return false;}
+      			mui.getJSON(
+		'http://fanyi.youdao.com/openapi.do?keyfrom=testorot&key=1145972070&type=data&doctype=json&version=1.1&q='+keywords,
+		function(data){
+			console.log(JSON.stringify(data));
+			h('#resShow').find('p').html(data.translation);
+			h('#resShow').show();
+		}
+	);
+    });
       	mui.plusReady(function(){
       		_self = plus.webview.currentWebview();
 	       _next = plus.webview.getWebviewById('sub3.html');
@@ -40,8 +68,5 @@
 			});
       	});
     </script>
-</head>
-<body>
-	sub2
 </body>
 </html>

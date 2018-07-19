@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title></title>
+<link href="css/mui.css" rel="stylesheet"/>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav hBg">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="color: #FFFFFF;"></a>
+    <h1 class="mui-title" id="title"></h1>
+</header>
+<div class="mui-content" id="newsContent"></div>
+<div id="newsFooter">
+	<div id="share"><img src="imgs/share.png" width="100%" /></div>
+</div>
+<script src="js/mui.min.js"></script>
+<script type="text/javascript" src="js/h.js" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+mui.init();
+var news;
+mui.plusReady(function(){
+	var _self = plus.webview.currentWebview();
+	//
+	mui.getJSON(
+		'http://hoa.hcoder.net/index.php?user=hcoder&pwd=hcoder&m=info&id='+_self.newId,
+		function(res){
+			news = res;
+			h('#title').html(res.title);
+			h('#newsContent').html(res.content);
+		}
+	);
+});
+h('#share').tap(function(){
+	var actionbuttons = [{title : "微信好友"}, {title : "朋友圈"}];
+	var actionstyle   = {title : "请选择分享类型", cancel : "取消", buttons : actionbuttons};
+	plus.nativeUI.actionSheet(actionstyle, function(e){
+		if(e.index){shareNow(e.index);}
+	});
+});
+var shareWx = null;
+function shareNow(type){
+	plus.share.getServices(function(services){
+		for(var k in services){
+			if(services[k].id = 'weixin'){
+				shareWx = services[k];
+			}
+		}
+		if(shareWx == null){mui.toast('您没有安装微信'); return;}
+		var msg = {
+			content : news.title,
+			href    : "http://www.hcoder.net/info/id/"+news.id
+		};
+		if(type == 1){
+			msg.extra = {scene:"WXSceneSession"}  //好友
+		}else{
+			msg.extra = {scene:"WXSceneTimeline"} //朋友圈
+		}
+		shareWx.send(msg, function(){
+			mui.toast('分享成功');
+		}, function(){
+			mui.toast('您取消了分享');
+		});
+	}, function(){
+		mui.toast('获取分享服务失败');
+	});
+}
+</script>
+</body>
+</html>

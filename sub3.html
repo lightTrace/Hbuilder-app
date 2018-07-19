@@ -1,15 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title></title>
-    <link href="css/mui.min.css" rel="stylesheet"/>
-    <script src="js/mui.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-      	mui.init();
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title></title>
+<link href="css/mui.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="mui-content mui-scroll-wrapper" id="refreshContainer">
+    <div class="mui-scroll newsList">
+        <ul class="mui-table-view" id="newsListUl"></ul>
+    </div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/h.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+mui.init({
+	pullRefresh : {
+		container : "#refreshContainer",
+		down: {
+			height:50, 
+            auto: true,
+            contentdown : "下拉可以刷新",
+            contentover : "释放立即刷新",
+            contentrefresh : "正在刷新...",
+            callback : getNewsList
+		},
+		up : {
+            height:100,
+            auto:false,
+            contentrefresh : "正在加载...",
+            contentnomore:'没有更多数据了',
+            callback : getListByPage
+        }
+	}
+});
+var page = 1;
+function getListByPage(){
+	var _self = this;
+	mui.get(
+		'http://hoa.hcoder.net/index.php?user=hcoder&pwd=hcoder&m=mediaList&page='+page,
+		function(res){
+			if(res == 'null'){
+				_self.endPullupToRefresh(true);
+				return false;
+			}
+			var newsLists = res.split('--hcSplitor--');
+			for(var i = 0; i < newsLists.length; i++){
+				var li = document.createElement('li');
+				var newsItem = newsLists[i].split('--hcListSplitor--');
+				li.innerHTML = '<a href="javascript:openInfo('+newsItem[0]+');"><div class="imgs"><img src="'+newsItem[1]+'" /></div><div class="title">'+newsItem[2]+'</div></a>';
+				h(li).addClass('mui-table-view-cell mui-media');
+				h(li).appendTo('#newsListUl');
+			}
+			page++;
+			_self.endPullupToRefresh(false);
+		}
+	);
+}
+function getNewsList(){
+	page = 1;
+	//新闻列表
+	mui.get(
+		'http://hoa.hcoder.net/index.php?user=hcoder&pwd=hcoder&m=mediaList&page='+page,
+		function(res){
+			var newsLists = res.split('--hcSplitor--');
+			var html = '';
+			for(var i = 0; i < newsLists.length; i++){
+				var newsItem = newsLists[i].split('--hcListSplitor--');
+				html += '<li class="mui-table-view-cell mui-media"> <a href="javascript:openInfo('+newsItem[0]+');">  <img class="mui-media-object mui-pull-left" src="'+newsItem[1]+'"> <div class="mui-media-body">' +newsItem[0]+' <p class="mui-ellipsis">'+newsItem[2]+'</p></div></a></li>'; 
+			
+			}
+			h('#newsListUl').html(html);
+			mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+			page++;
+			//重置上拉
+            mui('#refreshContainer').pullRefresh().refresh(true);
+		}
+	);
+}
       	var _index, _self, _next,_prev;
       	mui.plusReady(function(){
+      		
       		_self = plus.webview.currentWebview();
 	       _next = plus.webview.getWebviewById('sub4.html');
 	       _prev = plus.webview.getWebviewById('sub2.html');
@@ -39,9 +111,15 @@
 				}
 			});
       	});
-    </script>
-</head>
-<body>
-	sub3
+function openInfo(id){
+	mui.openWindow({
+		url : 'info.html',
+		id  : 'info.html',
+		extras : {
+			newId : id
+		}
+	});
+}
+</script>
 </body>
 </html>

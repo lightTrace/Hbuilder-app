@@ -1,15 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title></title>
-    <link href="css/mui.min.css" rel="stylesheet"/>
-    <script src="js/mui.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-      	mui.init();
-      	var _index, _self, _next,_prev;
-      	mui.plusReady(function(){
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title></title>
+<link href="css/mui.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="mui-content">
+    <div class="mui-slider">
+	  <div class="mui-slider-group mui-slider-loop" id="silder1"></div>
+	  <div class="mui-slider-indicator" id="point"></div>
+	</div>
+	<div class="newsList">
+		<ul class="mui-table-view"></ul>
+	</div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/h.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+mui.init();
+var _index, _self, _next;
+mui.plusReady(function(){
+	//获取轮播内容
+	mui.get(
+		'http://hoa.hcoder.net/index.php?user=hcoder&pwd=hcoder&m=lunbo',
+		function(res){
+			var items = res.split('--hcSplitor--');
+			var html  = '<div class="mui-slider-item"><a href="#">'+items[items.length - 1]+'</a></div>';
+			var points = '';
+			for(var i = 0; i < items.length; i++){
+				html += '<div class="mui-slider-item"><a href="#">'+items[i]+'</a></div>';
+				points += '<div class="mui-indicator"></div>';
+			}
+			html += '<div class="mui-slider-item"><a href="#">'+items[0]+'</a></div>';
+			h('#silder1').html(html);
+			h('#point').html(points);
+			var gallery = mui('.mui-slider');
+			gallery.slider({interval:5000});
+		}
+	);
+	//新闻列表
+	mui.get(
+		'http://hoa.hcoder.net/index.php?user=hcoder&pwd=hcoder&m=mediaList&page=1',
+		function(res){
+			var newsLists = res.split('--hcSplitor--');
+			var html = '';
+			for(var i = 0; i < newsLists.length; i++){
+				var newsItem = newsLists[i].split('--hcListSplitor--');
+				html += '<li class="mui-table-view-cell mui-media"> <a href="javascript:openInfo('+newsItem[0]+');">  <img class="mui-media-object mui-pull-left" src="'+newsItem[1]+'"> <div class="mui-media-body">' +newsItem[0]+' <p class="mui-ellipsis">'+newsItem[2]+'</p></div></a></li>'; 
+				//html += '<li><a href="javascript:openInfo('+newsItem[0]+');"><div class="imgs"><img src="'+newsItem[1]+'" /></div><div class="title">'+newsItem[2]+'</div></a></li>';
+			}
+			h('.mui-table-view').html(html);
+		}
+	);
       		_self = plus.webview.currentWebview();
 	       _next = plus.webview.getWebviewById('sub2.html');
 	       _prev = plus.webview.getWebviewById('sub4.html');
@@ -38,9 +82,15 @@
 				}
 			});
       	});
-    </script>
-</head>
-<body>
-	sub1
+function openInfo(id){
+	mui.openWindow({
+		url : 'info.html',
+		id  : 'info.html',
+		extras : {
+			newId : id
+		}
+	});
+}
+</script>
 </body>
 </html>
