@@ -64,7 +64,15 @@ mui.init({
 h('#nav1').tap(function(){changSub(1);});
 h('#nav2').tap(function(){changSub(2);});
 h('#nav3').tap(function(){changSub(3);});
-h('#nav4').tap(function(){changSub(4);});
+h('#nav4').tap(function(){
+var uid = plus.storage.getItem('suid');
+if(uid == null){
+	wxLogin('changSub(4);');
+	return false;
+}
+changSub(4);
+
+});
 h('#searchBut').tap(function(){
 	changSub(2);
     h('#navFooter').find("a").removeClass('mui-active');

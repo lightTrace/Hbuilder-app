@@ -86,18 +86,7 @@ function getNewsList(){
 	       _next = plus.webview.getWebviewById('sub4.html');
 	       _prev = plus.webview.getWebviewById('sub2.html');
 	       _index = plus.webview.getLaunchWebview();
-	       //向右滑动
-			_self.drag({
-				direction : "left",
-				moveMode  : "followFinger"
-			},{
-				view : _next,
-				moveMode : "follow"
-			},function(e){
-				if(e.type == 'end' && e.result){
-					_index.evalJS('h("#navFooter").find("a").removeClass("mui-active"); h("#nav4").addClass("mui-active")')
-				}
-			});
+
 			//向左滑动
 			_self.drag({
 				direction : "right",

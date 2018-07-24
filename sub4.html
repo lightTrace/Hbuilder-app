@@ -1,47 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title></title>
-    <link href="css/mui.min.css" rel="stylesheet"/>
-    <script src="js/mui.min.js"></script>
-    <script type="text/javascript" charset="utf-8">
-      	mui.init();
-      	var _index, _self, _next,_prev;
-      	mui.plusReady(function(){
-      		_self = plus.webview.currentWebview();
-	       _next = plus.webview.getWebviewById('sub1.html');
-	       _prev = plus.webview.getWebviewById('sub3.html');
-	       _index = plus.webview.getLaunchWebview();
-	       //向右滑动
-			_self.drag({
-				direction : "left",
-				moveMode  : "followFinger"
-			},{
-				view : _next,
-				moveMode : "follow"
-			},function(e){
-				if(e.type == 'end' && e.result){
-					_index.evalJS('h("#navFooter").find("a").removeClass("mui-active"); h("#nav1").addClass("mui-active")')
-				}
-			});
-			//向左滑动
-			_self.drag({
-				direction : "right",
-				moveMode  : "followFinger"
-			},{
-				view : _prev,
-				moveMode : "follow"
-			},function(e){
-				if(e.type == 'end' && e.result){
-					_index.evalJS('h("#navFooter").find("a").removeClass("mui-active"); h("#nav3").addClass("mui-active")')
-				}
-			});
-      	});
-    </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title></title>
+<link href="css/mui.css" rel="stylesheet"/>
 </head>
 <body>
-	sub4
+<div class="mui-content">
+    <div style="margin-top:25px;">
+    	<ul class="mui-table-view">
+            <li class="mui-table-view-cell mui-media">
+                <a href="javascript:;">
+                    <img class="mui-media-object mui-pull-left" src="" id="face">
+                    <div class="mui-media-body" id="name"></div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div style="margin-top:28px;">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell"><a href="javascript:void();" class="mui-navigate-right">其他功能</a></li>
+            <li class="mui-table-view-cell"><a href="javascript:void();" class="mui-navigate-right">其他功能</a></li>
+            <li class="mui-table-view-cell"><a href="javascript:void();" class="mui-navigate-right">其他功能</a></li>
+            <li class="mui-table-view-cell"><a href="javascript:void();" class="mui-navigate-right">其他功能</a></li>
+        </ul>
+    </div>
+    <div style="margin-top:28px;">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell">
+            	<a href="javascript:logoff();" class="mui-navigate-right">退出登录</a>
+           	</li>
+        </ul>
+    </div>
+</div>
+<script src="js/mui.min.js"></script>
+<script src="js/h.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+mui.init();
+var _index, _self, _next, _prev;
+mui.plusReady(function(){
+	_self = plus.webview.currentWebview();
+	_index = plus.webview.getLaunchWebview();
+	_prev  = plus.webview.getWebviewById('sub3.html');
+	
+	_self.drag({
+		direction : "right",
+		moveMode  : "followFinger"
+	},{
+		view : _prev,
+		moveMode : "follow"
+	},function(e){
+		if(e.type == 'end' && e.result){
+			_index.evalJS('h("#navFooter").find("a").removeClass("mui-active"); h("#nav3").addClass("mui-active");');
+		}
+	});
+	
+	//
+	h('#face').attr('src',plus.storage.getItem('sface'));
+	h('#name').html(plus.storage.getItem('snickname'));
+});
+</script>
 </body>
 </html>
